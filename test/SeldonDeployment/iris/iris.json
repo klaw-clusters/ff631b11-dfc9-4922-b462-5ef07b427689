@@ -28,7 +28,7 @@
                 "componentSpecs": [
                     {
                         "metadata": {
-                            "creationTimestamp": "2021-10-25T21:14:39Z"
+                            "creationTimestamp": "2021-10-25T21:16:31Z"
                         },
                         "spec": {
                             "containers": [
@@ -57,19 +57,19 @@
             {
                 "name": "canary",
                 "graph": {
-                    "name": "CANARY_NAME-container",
+                    "name": "iris-canary-container",
                     "implementation": "XGBOOST_SERVER",
                     "modelUri": "gs://tom-seldon-examples/deploy-workshop/sean-greaves/xgb"
                 },
                 "componentSpecs": [
                     {
                         "metadata": {
-                            "creationTimestamp": "2021-10-25T21:14:39Z"
+                            "creationTimestamp": "2021-10-25T21:16:31Z"
                         },
                         "spec": {
                             "containers": [
                                 {
-                                    "name": "CANARY_NAME-container",
+                                    "name": "iris-canary-container",
                                     "resources": {}
                                 }
                             ]
