@@ -1,0 +1,83 @@
+{
+    "kind": "Service",
+    "apiVersion": "serving.knative.dev/v1",
+    "metadata": {
+        "name": "test-sd-income-drift-income-drift-detector",
+        "namespace": "test",
+        "creationTimestamp": null,
+        "labels": {
+            "seldon.io/deployment-kind": "SeldonDeployment",
+            "seldon.io/deployment-name": "income",
+            "seldon.io/deployment-namespace": "test",
+            "seldon.io/detector-name": "income-drift-detector",
+            "seldon.io/detector-type": "drift"
+        }
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "fluentd": "true",
+                    "seldon-deployment-id": "income",
+                    "seldon.io/drift": "true"
+                },
+                "annotations": {
+                    "autoscaling.knative.dev/maxScale": "1",
+                    "autoscaling.knative.dev/minScale": "1",
+                    "prometheus.io/path": "/v1/metrics",
+                    "prometheus.io/port": "8080",
+                    "prometheus.io/scrape": "true"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "drift-detector",
+                        "image": "seldonio/alibi-detect-server:1.11.2",
+                        "args": [
+                            "--model_name",
+                            "income-drift-detector",
+                            "--http_port",
+                            "8080",
+                            "--protocol",
+                            "seldon.http",
+                            "--storage_uri",
+                            "gs://seldon-models/alibi-detect/cd/tabular/income-0_7_0/",
+                            "--reply_url",
+                            "http://seldon-request-logger.seldon-logs",
+                            "--event_type",
+                            "io.seldon.serving.inference.drift",
+                            "--event_source",
+                            "io.seldon.serving.income-income-drift-detector",
+                            "DriftDetector",
+                            "--drift_batch_size",
+                            "200"
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "SELDON_DEPLOYMENT_ID",
+                                "value": "income"
+                            },
+                            {
+                                "name": "SELDON_DEPLOYMENT_NAMESPACE",
+                                "value": "test"
+                            }
+                        ],
+                        "resources": {},
+                        "securityContext": {
+                            "runAsUser": 8888
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "status": {}
+}
