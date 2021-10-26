@@ -6,6 +6,7 @@
         "namespace": "test",
         "creationTimestamp": null,
         "labels": {
+            "app.kubernetes.io/instance": "ff631b11-dfc9-4922-b462-5ef07b427689-test",
             "fluentd": "true"
         }
     },
@@ -54,7 +55,21 @@
                 },
                 "engineResources": {},
                 "svcOrchSpec": {},
-                "traffic": 100
+                "traffic": 100,
+                "explainer": {
+                    "type": "AnchorTabular",
+                    "modelUri": "gs://seldon-models/sklearn/income/explainer-py37-0.6.0",
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
+                    },
+                    "config": {
+                        "batch_size": "100",
+                        "delta": "0.1",
+                        "tau": "0.15",
+                        "threshold": "0.95"
+                    }
+                }
             }
         ],
         "annotations": {
